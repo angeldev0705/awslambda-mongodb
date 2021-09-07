@@ -1,0 +1,14 @@
+Pool Id 
+us-east-1_POyEdL1J5
+
+Pool ARN 
+arn:aws:cognito-idp:us-east-1:774885475587:userpool/us-east-1_POyEdL1J5
+
+client id
+15cko3oj8oa461frindeqc0e4f
+
+
+Aws and MongoDB atlas Login-
+
+MAIL- taresamiler66@gmail.com
+PASS- John@0705
