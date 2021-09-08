@@ -4,10 +4,14 @@ const { check, validationResult } = require('express-validator')
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// services
+const User = require("./route/user");
+
 app.set('view engine', 'ejs');
 app.set("views", "views");
-
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(User);
 
 
 // index page
@@ -30,23 +34,6 @@ app.get('/forgotpassword', function (req, res) {
     res.render('forgotpassword');
 });
 
-app.post('/login', urlencodedParser, [
-    check('email', 'Email is required')
-        .isEmail()
-        .normalizeEmail(),
-    check('password', 'Password is required')
-        .isEmail()
-        .normalizeEmail()
-], (req, res) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        // return res.status(422).jsonp(errors.array())
-        const alert = errors.array()
-        res.render('index', {
-            alert
-        })
-    }
-})
 
 app.listen(PORT, () => {
     console.log(`server runing: ${PORT}`)
