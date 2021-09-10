@@ -1,17 +1,18 @@
 const express = require("express");
 const bodyParser = require('body-parser')
-const { check, validationResult } = require('express-validator')
+const Cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // services
-const User = require("./route/user");
+const routes = require("./routes");
 
 app.set('view engine', 'ejs');
 app.set("views", "views");
+app.use(Cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(User);
+app.use('/', routes);
 
 
 // index page
