@@ -68,10 +68,10 @@ router.post("/signup", (req, res) => {
 })
 
 
-// router.post("/login", (req, res) => {
-//     const email = req.body.email;
-//     const password = req.body.password;
-// })
+router.post("/login", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+})
 
 module.exports = router;
 
