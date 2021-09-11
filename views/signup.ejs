@@ -126,17 +126,17 @@
     <div class="container">
       <div class="col-md-12">
         <div class="col-md-8 login-box">
-          <form method="POST" action="/signup" enctype="multipart/form-data">
+          <form method="POST" action="/signup">
             <div>
               <h4 class="test">Create Account</h4>
             </div>
             <!-- <img src="https://dummyimage.com/600x400/000/"> -->
-
-            <div class="profile-badge profile-pic">
+            <!-- <div class="profile-badge profile-pic">
               <img
                 alt="User Pic"
                 src="https://d30y9cdsu7xlg0.cloudfront.net/png/138926-200.png"
                 id="profile-image"
+                name="profile"
                 height="200"
               />
               <input
@@ -146,7 +146,7 @@
                 onchange="previewFile()"
               />
               <div style="color: #999"></div>
-            </div>
+            </div> -->
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="exampleInputEmail1">First Name:</label>
@@ -156,6 +156,7 @@
                   name="firstname"
                   aria-describedby="emailHelp"
                   placeholder="John"
+                  required
                 />
               </div>
               <div class="form-group col-md-6">
@@ -166,6 +167,7 @@
                   name="lastname"
                   aria-describedby="emailHelp"
                   placeholder="Doe"
+                  required
                 />
               </div>
             </div>
@@ -178,6 +180,7 @@
                   name="email"
                   aria-describedby="emailHelp"
                   placeholder="example@gmail.com"
+                  required
                 />
               </div>
               <div class="form-group col-md-6">
@@ -187,6 +190,7 @@
                   class="form-control"
                   name="username"
                   placeholder="Enter username"
+                  required
                 />
               </div>
             </div>
@@ -198,11 +202,12 @@
                   class="form-control"
                   name="phone_number"
                   placeholder="Enter phone number"
+                  required
                 />
               </div>
               <div class="form-group col-md-6">
                 <label for="exampleInputPassword1">Select role:</label>
-                <select class="form-control">
+                <select class="form-control" required name="role">
                   <option value="admin">Admin</option>
                   <option value="customer">Customer</option>
                 </select>
@@ -216,6 +221,7 @@
                   class="form-control"
                   name="password"
                   placeholder="Enter password"
+                  required
                 />
               </div>
               <div class="form-group col-md-6">
@@ -225,6 +231,7 @@
                   class="form-control"
                   name="confirmpassword"
                   placeholder="Enter confirm password"
+                  required
                 />
               </div>
             </div>
@@ -233,7 +240,7 @@
               <div class="row">
                 <div class="col-md-12 not-account">
                   <p>
-                    Already have an account? <a href="/"><b>Login</b></a>
+                    Already have an account? <a href="/login"><b>Login</b></a>
                   </p>
                 </div>
               </div>

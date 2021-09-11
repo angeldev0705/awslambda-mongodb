@@ -1,0 +1,179 @@
+<html>
+  <head>
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .test {
+        color: #0069d9;
+        font-size: 20px;
+        text-align: center;
+      }
+      .login-box {
+        margin: auto;
+        margin-top: 40px;
+      }
+      .form-group label {
+        font-size: 13px;
+      }
+      .form-group-remeber {
+        font-size: 10px;
+      }
+      .forgot-password {
+        color: blue;
+        display: grid;
+        text-align: end;
+      }
+      .form-control {
+        font-size: 10px;
+      }
+      .btn-primary {
+        margin-top: 30px;
+        font-size: 12px;
+        width: 100%;
+      }
+      .form-control:focus {
+        box-shadow: none;
+        border: 1px solid #007bff;
+      }
+      .close:focus {
+        border: none;
+      }
+      .alert-dismissible {
+        font-size: 10px;
+      }
+      .alert-dismissible .close {
+        padding: 6px 9px;
+        border: none;
+      }
+      .close:not(:disabled):not(.disabled) {
+        cursor: pointer;
+        border: none;
+      }
+      .create-account {
+        color: blue;
+        font-size: 10px;
+        margin-top: 20px;
+        text-align: left;
+      }
+      .not-account {
+        font-size: 10px;
+        margin-top: 20px;
+        text-align: center;
+      }
+      .not-account b {
+        color: #0062cc;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div>
+            <%- include('_head'); -%>
+        </div> -->
+    <div class="container">
+      <div class="col-md-12">
+        <div class="col-md-4 login-box">
+          <form method="POST" action="/login">
+            <div>
+              <h4 class="test">Login</h4>
+            </div>
+            <% if(typeof alert != 'undefined') { %> <%
+            alert.forEach(function(error) { %>
+            <div
+              class="alert alert-warning alert-dismissible fade show"
+              role="alert"
+            >
+              <%= error.msg %>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <% }) %> <% } %>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email:</label>
+              <input
+                type="email"
+                class="form-control"
+                id="exampleInputEmail1"
+                aria-describedby="emailHelp"
+                placeholder="example@gmail.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password:</label>
+              <input
+                type="password"
+                class="form-control"
+                id="exampleInputPassword1"
+                placeholder="Enter password"
+              />
+            </div>
+            <div class="form-group-remeber">
+              <div class="row">
+                <div class="form-group-remeber col-md-6">
+                  <div class="form-check">
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="exampleCheck1"
+                    />
+                    <label class="form-check-label" for="exampleCheck1"
+                      >Remember password</label
+                    >
+                  </div>
+                </div>
+                <div class="form-group-remeber col-md-6">
+                  <label
+                    class="form-check-label forgot-password"
+                    for="exampleCheck1"
+                  >
+                    <a href="/forgotpassword">Forgot password?</a></label
+                  >
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-12 not-account">
+                  <p>
+                    Don’t have an account?
+                    <a href="/signup"><b>Create a free account</b></a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="col-md-4"></div>
+        </div>
+      </div>
+    </div>
+    <!-- <div>
+            <%- include('_footer'); -%>
+        </div> -->
+  </body>
+</html>

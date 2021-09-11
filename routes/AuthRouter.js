@@ -1,5 +1,5 @@
 const authService = require('../Controller/AuthController');
-const router = require('../routes');
+
 const signup = async (req, res) => {
     await authService.Signup(req.body, (error, response) => {
         console.log("error", error)

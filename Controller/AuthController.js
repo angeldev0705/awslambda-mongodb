@@ -72,7 +72,6 @@ const ResetPassword = (body, callback) => {
             return callback(null, result)
         },
         onFailure: function (error) {
-            console.log("error00000000000000", error)
             return callback(error, null)
         },
         inputVerificationCode() {
