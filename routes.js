@@ -7,4 +7,6 @@ router.post('/signup', Auth.signup);
 
 router.post('/login', Auth.login);
 
+router.post('/resetpassword', Auth.resetPassword);
+
 module.exports = router;

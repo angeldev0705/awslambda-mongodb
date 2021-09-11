@@ -39,8 +39,28 @@ const login = async (req, res) => {
     })
 }
 
+const resetPassword = async (req, res) => {
+    await authService.ResetPassword(req.body, (error, response) => {
+        if (error) {
+            return res.send({
+                status: 400,
+                message: "Not Done",
+                error: error
+            });
+        }
+        else {
+            return res.send({
+                status: 200,
+                message: "You have successfully reset password",
+                data: response
+            });
+        }
+    })
+}
+
 
 module.exports = {
     login,
-    signup
+    signup,
+    resetPassword
 }

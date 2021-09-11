@@ -50,14 +50,6 @@ const Login = (body, callback) => {
     }
     var cognitoUser = new AmazonCognitoIdenstity.CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
-        // cognitoUser.authenticateUser(authenticationDetails, (error, result) => {
-        // if (error) {
-        //     return callback(error, null);
-        // }
-        // else {
-        //     return callback(null, result);
-        // }
-
         onSuccess: function (result) {
             var accesstoken = result.getAccessToken().getJwtToken();
             return callback(null, result);
@@ -68,6 +60,31 @@ const Login = (body, callback) => {
     })
 };
 
+const ResetPassword = (body, callback) => {
+    const username = body.username
+    cognitoUser = new AmazonCognitoIdenstity.CognitoUser({
+        Username: username,
+        Pool: userPool
+    });
+
+    cognitoUser.forgotPassword({
+        onSuccess: function (result) {
+            return callback(null, result)
+        },
+        onFailure: function (error) {
+            console.log("error00000000000000", error)
+            return callback(error, null)
+        },
+        inputVerificationCode() {
+            var verificationCode = prompt('Please input verification code ', '');
+            var newPassword = prompt('Enter new password ', '');
+            cognitoUser.confirmPassword(verificationCode, newPassword, this);
+        }
+    });
+}
+
 module.exports = {
-    Signup, Login
+    Signup,
+    Login,
+    ResetPassword
 }
