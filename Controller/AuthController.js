@@ -2,8 +2,8 @@ const AmazonCognitoIdenstity = require('amazon-cognito-identity-js');
 const config = require("../config/config")
 
 const poolData = {
-    UserPoolId: "us-east-2_mlKgTBiIL",
-    ClientId: "6ie3i1srnkknrr349kabdh6dc4"
+    UserPoolId: config.userPoolId,
+    ClientId: config.clientId
 };
 const userPool = new AmazonCognitoIdenstity.CognitoUserPool(poolData);
 
@@ -27,12 +27,13 @@ const Signup = (body, callback) => {
     attributeList.push(attributeEmail);
     attributeList.push(attributePhoneNumber);
 
-    userPool.signUp(email, password, attributeList, null, function (err, result) {
+    userPool.signUp(email, password, attributeList, null, (err, result) => {
         if (err) {
-            return callback(err)
+            return callback(err, null)
         }
-        cognitoUser = result.user;
-        console.log('user name is ' + cognitoUser.getUsername());
+        else {
+            return callback(null, result)
+        }
     });
 }
 
@@ -47,14 +48,22 @@ const Login = (body, callback) => {
         Username: userName,
         Pool: userPool
     }
-    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    var cognitoUser = new AmazonCognitoIdenstity.CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
+        // cognitoUser.authenticateUser(authenticationDetails, (error, result) => {
+        // if (error) {
+        //     return callback(error, null);
+        // }
+        // else {
+        //     return callback(null, result);
+        // }
+
         onSuccess: function (result) {
             var accesstoken = result.getAccessToken().getJwtToken();
-            callback(null, accesstoken);
+            return callback(null, result);
         },
         onFailure: (function (err) {
-            callback(err);
+            return callback(err, null);
         })
     })
 };
