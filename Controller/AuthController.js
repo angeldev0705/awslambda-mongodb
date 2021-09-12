@@ -1,9 +1,10 @@
 const AmazonCognitoIdenstity = require('amazon-cognito-identity-js');
 const config = require("../config/config");
-const JWT = require("jsonwebtoken")
+const JWT = require("jsonwebtoken");
+const Bcrypt = require('bcryptjs');
 const localStorage = require("localStorage")
 const { JWTPEIVATEKEY } = require("../lib/jwt");
-const { response } = require('express');
+const UserModel = require("../model/Auth");
 
 const poolData = {
     UserPoolId: config.userPoolId,
@@ -11,8 +12,12 @@ const poolData = {
 };
 const userPool = new AmazonCognitoIdenstity.CognitoUserPool(poolData);
 
-const Signup = (body, callback) => {
+const Signup = async (body, callback) => {
+    var firstname = body.firstname;
+    var lastname = body.lastname;
     var email = body.email;
+    var username = body.username;
+    var role = body.role;
     var phone_number = body.phone_number;
     var password = body.password;
     var attributeList = [];
@@ -30,13 +35,25 @@ const Signup = (body, callback) => {
 
     attributeList.push(attributeEmail);
     attributeList.push(attributePhoneNumber);
-
-    userPool.signUp(email, password, attributeList, null, (err, result) => {
+    let passwordHash = await Bcrypt.hash(password, 8);
+    const userData = await new UserModel({
+        firstname: firstname,
+        lastname: lastname,
+        fullname: firstname + ' ' + lastname,
+        email: email,
+        username: username,
+        role: role,
+        phone_number: phone_number,
+        password: passwordHash
+    })
+    await userData.save();
+    userPool.signUp(email, password, attributeList, null, async (err, result) => {
         if (err) {
             return callback(err, null)
         }
         else {
-            return callback(null, data)
+            return callback(null, result)
+
         }
     });
 }
@@ -55,7 +72,9 @@ const Login = async (body, callback) => {
     var cognitoUser = new AmazonCognitoIdenstity.CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: async (result) => {
-            const token = await JWT.sign({ userName: userName }, JWTPEIVATEKEY)
+            const token = await JWT.sign({ userName: userName }, JWTPEIVATEKEY, {
+                expiresIn: "24h"
+            })
             let data = {
                 token: token,
                 email: userName
@@ -64,8 +83,8 @@ const Login = async (body, callback) => {
             localStorage.setItem("token", token)
             return callback(null, data)
         },
-        onFailure: (async (err) => {
-            console.log("Error:", err)
+        onFailure: (async (error) => {
+            return callback(error, null)
         })
     })
 };

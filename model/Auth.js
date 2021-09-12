@@ -7,17 +7,34 @@ const Userschema = new mongoose.Schema({
     lastname: {
         type: String
     },
+    fullname: {
+        type: String
+    },
     email: {
         type: String
     },
-    password: {
+    username: {
+        type: String
+    },
+    email: {
+        type: String
+    },
+    username: {
         type: String
     },
     phone_number: {
+        type: Number
+    },
+    role: {
+        type: String
+    },
+    passowrd: {
         type: String
     }
+}, {
+    timestamps: true
 });
 
-const User = mongoose.model("user", Userschema);
+const User = mongoose.model.user || mongoose.model("user", Userschema);
 
 module.exports = User

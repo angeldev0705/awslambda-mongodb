@@ -93,6 +93,11 @@
       select.form-control:not([size]):not([multiple]) {
         height: calc(27px + 2px);
       }
+      .alert-success {
+        padding: 9px 5px 0px 15px;
+        color: green;
+        font-size: 13px;
+      }
     </style>
     <script>
       function previewFile() {
@@ -147,6 +152,22 @@
               />
               <div style="color: #999"></div>
             </div> -->
+            <% if(msg !='') { %>
+            <div
+              class="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <strong>Required: </strong> <%= msg %>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <% } %>
             <div class="row">
               <div class="form-group col-md-6">
                 <label for="exampleInputEmail1">First Name:</label>
@@ -156,7 +177,6 @@
                   name="firstname"
                   aria-describedby="emailHelp"
                   placeholder="John"
-                  required
                 />
               </div>
               <div class="form-group col-md-6">
@@ -167,7 +187,6 @@
                   name="lastname"
                   aria-describedby="emailHelp"
                   placeholder="Doe"
-                  required
                 />
               </div>
             </div>
@@ -180,7 +199,6 @@
                   name="email"
                   aria-describedby="emailHelp"
                   placeholder="example@gmail.com"
-                  required
                 />
               </div>
               <div class="form-group col-md-6">
@@ -190,7 +208,6 @@
                   class="form-control"
                   name="username"
                   placeholder="Enter username"
-                  required
                 />
               </div>
             </div>
@@ -202,12 +219,12 @@
                   class="form-control"
                   name="phone_number"
                   placeholder="Enter phone number"
-                  required
                 />
               </div>
               <div class="form-group col-md-6">
                 <label for="exampleInputPassword1">Select role:</label>
                 <select class="form-control" required name="role">
+                  <option value="admin" selected disabled>Select role</option>
                   <option value="admin">Admin</option>
                   <option value="customer">Customer</option>
                 </select>
@@ -221,7 +238,6 @@
                   class="form-control"
                   name="password"
                   placeholder="Enter password"
-                  required
                 />
               </div>
               <div class="form-group col-md-6">
@@ -231,7 +247,6 @@
                   class="form-control"
                   name="confirmpassword"
                   placeholder="Enter confirm password"
-                  required
                 />
               </div>
             </div>

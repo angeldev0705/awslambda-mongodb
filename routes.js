@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const localStorage = require("localStorage")
 const JWT = require("jsonwebtoken")
+const User = require("./model/Auth")
 
 const { JWTPEIVATEKEY } = require('./lib/jwt');
 var Auth = require('./routes/AuthRouter');
@@ -27,8 +28,24 @@ router.get('/', checkLoginuser, function (req, res) {
 
 // signup route
 router.get('/signup', function (req, res) {
-    res.render('signup');
+    res.render('signup', { msg: '' });
 });
+
+// router.post("/data", async (req, res) => {
+//     const data = await new User({
+//         email: "demo1@gmail.com",
+//         password: "123456"
+//     });
+//     await data.save().then((data) => {
+//         res.send({
+//             message: "seve data"
+//         })
+//     }).catch((error) => {
+//         res.send({
+//             message: "something went wrong"
+//         })
+//     })
+// })
 
 router.post('/signup', Auth.signup);
 

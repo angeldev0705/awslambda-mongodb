@@ -9,7 +9,6 @@ const Authentic = async (req, res, next) => {
     }
     try {
         const decoded = JWT.verify(token, JET_SECRET);
-        console.log(";;;;;;;;;;;", decoded)
         next();
     } catch (error) {
         return res.status(401).json({
