@@ -1,5 +1,9 @@
 const AmazonCognitoIdenstity = require('amazon-cognito-identity-js');
-const config = require("../config/config")
+const config = require("../config/config");
+const JWT = require("jsonwebtoken")
+const localStorage = require("localStorage")
+const { JWTPEIVATEKEY } = require("../lib/jwt");
+const { response } = require('express');
 
 const poolData = {
     UserPoolId: config.userPoolId,
@@ -32,13 +36,13 @@ const Signup = (body, callback) => {
             return callback(err, null)
         }
         else {
-            return callback(null, result)
+            return callback(null, data)
         }
     });
 }
 
-const Login = (body, callback) => {
-    var userName = body.username;
+const Login = async (body, callback) => {
+    var userName = body.email;
     var password = body.password;
     var authenticationDetails = new AmazonCognitoIdenstity.AuthenticationDetails({
         Username: userName,
@@ -50,12 +54,18 @@ const Login = (body, callback) => {
     }
     var cognitoUser = new AmazonCognitoIdenstity.CognitoUser(userData);
     cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
-            var accesstoken = result.getAccessToken().getJwtToken();
-            return callback(null, result);
+        onSuccess: async (result) => {
+            const token = await JWT.sign({ userName: userName }, JWTPEIVATEKEY)
+            let data = {
+                token: token,
+                email: userName
+            }
+            localStorage.setItem("email", userName)
+            localStorage.setItem("token", token)
+            return callback(null, data)
         },
-        onFailure: (function (err) {
-            return callback(err, null);
+        onFailure: (async (err) => {
+            console.log("Error:", err)
         })
     })
 };

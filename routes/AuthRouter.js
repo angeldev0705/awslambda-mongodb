@@ -11,16 +11,25 @@ const signup = async (req, res) => {
             });
         }
         else {
-            return res.send({
-                status: 200,
-                message: "you have successfully signup in!",
-                data: response
-            });
+            // return res.send({
+            //     status: 200,
+            //     message: "you have successfully signup in!",
+            //     data: response
+            // });
+            res.render('login', { 'studentlist': response });
         }
     })
 }
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
+    const userName = req.body.email;
+    const password = req.body.password;
+    if (!userName) {
+        return res.render("login", { msg: "Email is required" })
+    }
+    if (!password) {
+        return res.render("login", { msg: "Password is required" })
+    }
     await authService.Login(req.body, (error, response) => {
         if (error) {
             return res.send({
@@ -30,11 +39,7 @@ const login = async (req, res) => {
             });
         }
         else {
-            return res.send({
-                status: 200,
-                message: "you have successfully logged in!",
-                data: response
-            });
+            return res.redirect("/")
         }
     })
 }
