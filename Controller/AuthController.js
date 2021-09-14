@@ -10,6 +10,7 @@ const poolData = {
     UserPoolId: config.userPoolId,
     ClientId: config.clientId
 };
+
 const userPool = new AmazonCognitoIdenstity.CognitoUserPool(poolData);
 
 const Signup = async (body, callback) => {
