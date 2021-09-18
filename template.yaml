@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'booking-user-service'
+
+# Settings
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+  Function:
+    Timeout: 3
+
+Resources:
+  # Api Gateway
+  BookingUserServiceRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: staging
+      Name: BookingUserServiceRestApi
+
+  # Lambda Functions
+  RegisterTelephoneNumberFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: signup/
+      Handler: app.handler
+      Runtime: nodejs10.x
+      Events:
+        RegisterTelephoneNumberFunctionEvent:
+          Type: Api
+          Properties:
+              Path: /signup
+              Method: POST
+              RestApiId:
+                Ref: BookingUserServiceRestApi
+  PreSignupFunction: 
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: signup/
+      Handler: app.handler
+      Runtime: nodejs10.x
+
+  # User Pool
+  UserPoolStaging:
+    Type: "AWS::Cognito::UserPool"
+    Properties:
+      UserPoolName: booking-app-user-pool--staging
+      LambdaConfig:
+        PreSignUp: !GetAtt PreSignupFunction.Arn
+      Schema:
+        - Name: name
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: email
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+        - Name: phone_number
+          AttributeDataType: String
+          Mutable: false
+          Required: true
+        - Name:  confirmationCode
+          AttributeDataType: String
+          Mutable: true
+          Required: false
+
+  UserPoolClient:
+    Type: "AWS::Cognito::UserPoolClient"
+    Properties:
+      ClientName: !Sub booking-app-user-client--staging
+      GenerateSecret: false
+      UserPoolId: !Ref UserPoolStaging
+
+  IdentityPool:
+    Type: "AWS::Cognito::IdentityPool"
+    Properties:
+      IdentityPoolName: booking-app-identity-pool--staging
+      AllowUnauthenticatedIdentities: true
+      CognitoIdentityProviders: 
+        - ClientId: !Ref UserPoolClient
+          ProviderName: !GetAtt UserPoolStaging.ProviderName
+
+  # Deployments
+  Deployment:
+    Type: AWS::ApiGateway::Deployment
+    Properties:
+      RestApiId: !Ref BookingUserServiceRestApi
+      Description: Staging deployment
+
+  UserPoolLambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt PreSignupFunction.Arn
+      Action: lambda:invokeFunction
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !Join
+        - ''
+        - - 'arn:aws:cognito-idp:'
+          - !Ref 'AWS::Region'
+          - ':'
+          - !Ref 'AWS::AccountId'
+          - ':'
+          - userpool/*
