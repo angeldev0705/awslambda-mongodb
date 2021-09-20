@@ -12,6 +12,15 @@ Globals:
   Function:
     Timeout: 3
 
+# Variable declaration
+Parameters:
+  ENV:
+    Type: String
+  UserPoolId:
+    Type: String
+  UserPoolClientId:
+    Type: String
+
 Resources:
   # Api Gateway
   BookingUserServiceRestApi:
